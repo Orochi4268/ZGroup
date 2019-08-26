@@ -4,6 +4,8 @@ from .forms import RegisterForm
 
 # Create your views here.
 def register(request):
+    redirect_back = request.POST.get('next', request.GET.get('next', '/'))
+
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
@@ -13,4 +15,6 @@ def register(request):
     else:
         form = RegisterForm()
 
-    return render(request, 'users/register.html', context={'form': form})
+    context = {'form': form, 'next': redirect_back}
+
+    return render(request, 'users/register.html', context)
